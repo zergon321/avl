@@ -104,35 +104,35 @@ func (nd *node[TKey, TValue]) findMin() *node[TKey, TValue] {
 	return nd
 }
 
-func (p *node[TKey, TValue]) removeMin() *node[TKey, TValue] {
-	if p.left == nil {
-		return p.right
+func (nd *node[TKey, TValue]) removeMin() *node[TKey, TValue] {
+	if nd.left == nil {
+		return nd.right
 	}
 
-	p.left = p.left.removeMin()
+	nd.left = nd.left.removeMin()
 
-	return p.balance()
+	return nd.balance()
 }
 
-func (p *node[TKey, TValue]) remove(key TKey) *node[TKey, TValue] {
-	if p == nil {
+func (nd *node[TKey, TValue]) remove(key TKey) *node[TKey, TValue] {
+	if nd == nil {
 		return nil
 	}
 
-	if key < p.key {
-		p.left = p.left.remove(key)
-	} else if key > p.key {
-		p.right = p.right.remove(key)
+	if key < nd.key {
+		nd.left = nd.left.remove(key)
+	} else if key > nd.key {
+		nd.right = nd.right.remove(key)
 	} else {
-		q := p.left
-		r := p.right
+		left := nd.left
+		right := nd.right
 
-		min := r.findMin()
-		min.right = r.removeMin()
-		min.left = q
+		min := right.findMin()
+		min.right = right.removeMin()
+		min.left = left
 
 		return min.balance()
 	}
 
-	return p.balance()
+	return nd.balance()
 }
